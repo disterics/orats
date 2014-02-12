@@ -71,118 +71,118 @@ git commit: "-m 'Add the devise mailer queue to the sidekiq config'"
 
 # ----- Create the account fixtures -------------------------------------------------------------------
 
-puts
-say_status  'test', 'Creating the account fixtures...', :yellow
-puts        '-'*80, ''; sleep 0.25
+# puts
+# say_status  'test', 'Creating the account fixtures...', :yellow
+# puts        '-'*80, ''; sleep 0.25
 
-file 'test/fixtures/accounts.yml' do <<-'CODE'
-foo:
-  id: 1
-  email: foo@bar.com
-  encrypted_password: passwordisnotreallyencrypted
-  role: admin
-  created_at: 2012-01-01 01:45:17
-  current_sign_in_at: 2013-03-15 11:22:33
+# file 'test/fixtures/accounts.yml' do <<-'CODE'
+# foo:
+#   id: 1
+#   email: foo@bar.com
+#   encrypted_password: passwordisnotreallyencrypted
+#   role: admin
+#   created_at: 2012-01-01 01:45:17
+#   current_sign_in_at: 2013-03-15 11:22:33
 
-no_role:
-  id: 2
-  email: joey@almostcool.com
-  encrypted_password: hackthegibson
-  created_at: 1995-09-15 08:10:12
+# no_role:
+#   id: 2
+#   email: joey@almostcool.com
+#   encrypted_password: hackthegibson
+#   created_at: 1995-09-15 08:10:12
 
-bad_role:
-  id: 3
-  email: hello@world.com
-  encrypted_password: reallysecure
-  role: ahhhh
-  created_at: 2011-09-20 10:10:10
+# bad_role:
+#   id: 3
+#   email: hello@world.com
+#   encrypted_password: reallysecure
+#   role: ahhhh
+#   created_at: 2011-09-20 10:10:10
 
-beep:
-  id: 4
-  email: beep@beep.com
-  encrypted_password: beepbeepbeep
-  created_at: 2010-03-6 05:15:45
-CODE
-end
+# beep:
+#   id: 4
+#   email: beep@beep.com
+#   encrypted_password: beepbeepbeep
+#   created_at: 2010-03-6 05:15:45
+# CODE
+# end
 
-git add: '.'
-git commit: "-m 'Add the account model'"
+# git add: '.'
+# git commit: "-m 'Add the account model'"
 
-# ----- Modify the test helper ------------------------------------------------------------------------
+# # ----- Modify the test helper ------------------------------------------------------------------------
 
-puts
-say_status  'test', 'Modifying the test helper...', :yellow
-puts        '-'*80, ''; sleep 0.25
+# puts
+# say_status  'test', 'Modifying the test helper...', :yellow
+# puts        '-'*80, ''; sleep 0.25
 
-inject_into_file 'test/test_helper.rb', after: "end\n" do <<-CODE
+# inject_into_file 'test/test_helper.rb', after: "end\n" do <<-CODE
 
-class ActionController::TestCase
-  include Devise::TestHelpers
-end
-CODE
-end
+# class ActionController::TestCase
+#   include Devise::TestHelpers
+# end
+# CODE
+# end
 
-git add: '.'
-git commit: "-m 'Add the devise helpers to test helper'"
+# git add: '.'
+# git commit: "-m 'Add the devise helpers to test helper'"
 
-# ----- Create the account unit tests -----------------------------------------------------------------
+# # ----- Create the account unit tests -----------------------------------------------------------------
 
-puts
-say_status  'test', 'Creating the account unit tests...', :yellow
-puts        '-'*80, ''; sleep 0.25
+# puts
+# say_status  'test', 'Creating the account unit tests...', :yellow
+# puts        '-'*80, ''; sleep 0.25
 
-file 'test/models/account_test.rb' do <<-'CODE'
-require 'test_helper'
+# file 'test/models/account_test.rb' do <<-'CODE'
+# require 'test_helper'
 
-class AccountTest < ActiveSupport::TestCase
-  def setup
-    @account = accounts(:foo)
-  end
+# class AccountTest < ActiveSupport::TestCase
+#   def setup
+#     @account = accounts(:foo)
+#   end
 
-  def teardown
-    @account = nil
-  end
+#   def teardown
+#     @account = nil
+#   end
 
-  test 'expect new account' do
-    assert @account.valid?
-    assert_not_nil @account.email
-    assert_not_nil @account.encrypted_password
-  end
+#   test 'expect new account' do
+#     assert @account.valid?
+#     assert_not_nil @account.email
+#     assert_not_nil @account.encrypted_password
+#   end
 
-  test 'expect guest to be default role' do
-    no_role = accounts(:no_role)
-    assert_equal 'guest', no_role.role
-  end
+#   test 'expect guest to be default role' do
+#     no_role = accounts(:no_role)
+#     assert_equal 'guest', no_role.role
+#   end
 
-  test 'expect invalid role to not save' do
-    bad_role = accounts(:bad_role)
-    assert_not bad_role.valid?
-  end
+#   test 'expect invalid role to not save' do
+#     bad_role = accounts(:bad_role)
+#     assert_not bad_role.valid?
+#   end
 
-  test 'expect e-mail to be unique' do
-    duplicate = Account.create(email: 'foo@bar.com')
+#   test 'expect e-mail to be unique' do
+#     duplicate = Account.create(email: 'foo@bar.com')
 
-    assert_not duplicate.valid?
-  end
+#     assert_not duplicate.valid?
+#   end
 
-  test 'expect random password if password is empty' do
-    @account.password = ''
-    @account.encrypted_password = ''
-    @account.save
+#   test 'expect random password if password is empty' do
+#     @account.password = ''
+#     @account.encrypted_password = ''
+#     @account.save
 
-    random_password = Account.generate_password
-    assert_equal 10, random_password.length
-  end
+#     random_password = Account.generate_password
+#     assert_equal 10, random_password.length
+#   end
 
-  test 'expect random password of 20 characters' do
-    assert_equal 20, Account.generate_password(20).length
-  end
-end
-CODE
-end
+#   test 'expect random password of 20 characters' do
+#     assert_equal 20, Account.generate_password(20).length
+#   end
+# end
+# CODE
+# end
 
-git add: '.'
-git commit: "-m 'Add the account unit tests'"
+# git add: '.'
+# git commit: "-m 'Add the account unit tests'"
 
 # ----- Create the account model ----------------------------------------------------------------------
 
@@ -349,331 +349,234 @@ puts
 say_status  'views', 'Creating the devise views...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-file 'app/views/devise/confirmations/new.html.erb' do <<-HTML
-<%
-  title 'Confirm'
-  meta_description '...'
-  heading 'Confirm'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true,
-        data: {
-          'rule-required' => 'true',
-          'rule-maxlength' => '254'
-        } %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/confirmations/new.html.haml' do <<-HTML
+- title 'Confirm'
+- meta_description '...'
+- heading 'Confirm'
+.row
+  .col-sm-4
+    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true, |
+          data: {                                                                       |
+            'rule-required' => 'true',                                                  |
+            'rule-maxlength' => '254'                                                   |
+          }                                                                             |
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Send
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/mailer/confirmation_instructions.html.erb' do <<-HTML
-<p>Welcome <%= @email %>!</p>
-
-<p>You can confirm your account email through the link below:</p>
-
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+file 'app/views/devise/mailer/confirmation_instructions.html.haml' do <<-HTML
+%p
+  Welcome #{@email}!
+%p You can confirm your account email through the link below:
+%p= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token)
 HTML
 end
 
-file 'app/views/devise/mailer/reset_password_instructions.html.erb' do <<-HTML
-<p>Hello <%= @resource.email %>!</p>
-
-<p>Someone has requested a link to change your password. You can do this through the link below.</p>
-
-<p><%= link_to 'Change my password', edit_password_url(@resource, reset_password_token: @token) %></p>
-
-<p>If you didn't request this, please ignore this email.</p>
-<p>Your password won't change until you access the link above and create a new one.</p>
+file 'app/views/devise/mailer/reset_password_instructions.html.haml' do <<-HTML
+%p
+  Hello #{@resource.email}!
+%p Someone has requested a link to change your password. You can do this through the link below.
+%p= link_to 'Change my password', edit_password_url(@resource, reset_password_token: @token)
+%p If you didn't request this, please ignore this email.
+%p Your password won't change until you access the link above and create a new one.
 HTML
 end
 
-file 'app/views/devise/mailer/unlock_instructions.html.erb' do <<-HTML
-<p>Hello <%= @resource.email %>!</p>
-
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
-
-<p>Click the link below to unlock your account:</p>
-
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+file 'app/views/devise/mailer/unlock_instructions.html.haml' do <<-HTML
+%p
+  Hello #{@resource.email}!
+%p Your account has been locked due to an excessive number of unsuccessful sign in attempts.
+%p Click the link below to unlock your account:
+%p= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token)
 HTML
 end
 
-file 'app/views/devise/passwords/edit.html.erb' do <<-HTML
-<%
-  title 'Change your password'
-  meta_description '...'
-  heading 'Change your password'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :put } do |f| %>
-      <%= f.hidden_field :reset_password_token %>
-      <div class="form-group">
-        <%= f.label :password, 'New password' %>
-        <%= f.password_field :password, maxlength: 128, class: 'form-control', autofocus: true,
-        data: {
-          'rule-required' => 'true',
-          'rule-minlength' => '8',
-          'rule-maxlength' => '128'
-        } %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/passwords/edit.html.haml' do <<-HTML
+- title 'Change your password'
+- meta_description '...'
+- heading 'Change your password'
+.row
+  .col-sm-4
+    = form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :put } do |f|
+      = f.hidden_field :reset_password_token
+      .form-group
+        = f.label :password, 'New password'
+        = f.password_field :password, maxlength: 128, class: 'form-control', autofocus: true, |
+          data: {                                                                             |
+            'rule-required' => 'true',                                                        |
+            'rule-minlength' => '8',                                                          |
+            'rule-maxlength' => '128'                                                         |
+          }                                                                                   |
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Send
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/passwords/new.html.erb' do <<-HTML
-<%
-  title 'Forgot your password?'
-  meta_description '...'
-  heading 'Forgot your password?'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :post } do |f| %>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control', autofocus: true, maxlength: 254,
-        data: {
-          'rule-required' => 'true',
-          'rule-maxlength' => '254'
-        } %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/passwords/new.html.haml' do <<-HTML
+- title 'Forgot your password?'
+- meta_description '...'
+- heading 'Forgot your password?'
+.row
+  .col-sm-4
+    = form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :post } do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', autofocus: true, maxlength: 254, |
+          data: {                                                                       |
+            'rule-required' => 'true',                                                  |
+            'rule-maxlength' => '254'                                                   |
+          }                                                                             |
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Send
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/registrations/edit.html.erb' do <<-HTML
-<%
-  title 'Edit your account'
-  meta_description '...'
-  heading 'Edit your account'
-%>
-
-<div class="row">
-  <div class="col-sm-6">
-    <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :patch } do |f| %>
-      <div class="form-group">
-        <%= f.label :current_password %>
-        <span class="help-block form-help-adjust-margin">
-          <small>
+file 'app/views/devise/registrations/edit.html.haml' do <<-HTML
+- title 'Edit your account'
+- meta_description '...'
+- heading 'Edit your account'
+.row
+  .col-sm-6
+    = form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :patch } do |f|
+      .form-group
+        = f.label :current_password
+        %span.help-block.form-help-adjust-margin
+          %small
             Supply your current password to make any changes
-          </small>
-        </span>
-        <%= f.password_field :current_password, maxlength: 128, class: 'form-control',
-        data: {
-          'rule-required' => 'true',
-          'rule-minlength' => '8',
-          'rule-maxlength' => '128'
-        } %>
-      </div>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true %>
-      </div>
-      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-        <h3>Currently waiting confirmation for: <%= resource.unconfirmed_email %></h3>
-      <% end %>
-      <div class="form-group">
-        <%= f.label :password %>
-        <span class="help-block form-help-adjust-margin">
-          <small>
+        = f.password_field :current_password, maxlength: 128, class: 'form-control', |
+          data: {                                                                    |
+            'rule-required' => 'true',                                               |
+            'rule-minlength' => '8',                                                 |
+            'rule-maxlength' => '128'                                                |
+          }                                                                          |
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        %h3
+          Currently waiting confirmation for: #{resource.unconfirmed_email}
+      .form-group
+        = f.label :password
+        %span.help-block.form-help-adjust-margin
+          %small
             Leave this blank if you do not want to change it
-          </small>
-        </span>
-        <%= f.password_field :password, class: 'form-control' %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+        = f.password_field :password, class: 'form-control'
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Save
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6">
-    <p>
-      Unhappy? <%= button_to 'Cancel my account', registration_path(resource_name), method: :delete %>
-    </p>
-  </div>
-</div>
+  .col-sm-6
+    %p
+      Unhappy? #{button_to 'Cancel my account', registration_path(resource_name), method: :delete}
 HTML
 end
 
-file 'app/views/devise/registrations/new.html.erb' do <<-HTML
-<%
-  title 'Register a new account'
-  meta_description '...'
-  heading 'Register a new account'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for resource, as: resource_name, url: registration_path(resource_name) do |f| %>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, maxlength: 128, class: 'form-control',
-        data: {
-          'rule-required' => 'true',
-          'rule-minlength' => '8',
-          'rule-maxlength' => '128'
-        } %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/registrations/new.html.haml' do <<-HTML
+- title 'Register a new account'
+- meta_description '...'
+- heading 'Register a new account'
+.row
+  .col-sm-4
+    = form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true
+      .form-group
+        = f.label :password
+        = f.password_field :password, maxlength: 128, class: 'form-control', |
+          data: {                                                            |
+            'rule-required' => 'true',                                       |
+            'rule-minlength' => '8',                                         |
+            'rule-maxlength' => '128'                                        |
+          }                                                                  |
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Register
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/sessions/new.html.erb' do <<-HTML
-<%
-  title 'Sign in'
-  meta_description '...'
-  heading 'Sign in'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for resource, as: resource_name, url: session_path(resource_name) do |f| %>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, maxlength: 254, class: 'form-control', autofocus: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, maxlength: 128, class: 'form-control',
-        data: {
-          'rule-required' => 'true',
-          'rule-minlength' => '8',
-          'rule-maxlength' => '128'
-        } %>
-      </div>
-      <% if devise_mapping.rememberable? -%>
-        <div class="checkbox">
-          <%= f.label :remember_me do %>
-            <%= f.check_box :remember_me %> Stay signed in
-          <% end %>
-        </div>
-      <% end -%>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/sessions/new.html.haml' do <<-HTML
+- title 'Sign in'
+- meta_description '...'
+- heading 'Sign in'
+.row
+  .col-sm-4
+    = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, maxlength: 254, class: 'form-control', autofocus: true
+      .form-group
+        = f.label :password
+        = f.password_field :password, maxlength: 128, class: 'form-control', |
+          data: {                                                            |
+            'rule-required' => 'true',                                       |
+            'rule-minlength' => '8',                                         |
+            'rule-maxlength' => '128'                                        |
+          }                                                                  |
+      - if devise_mapping.rememberable?
+        .checkbox
+          = f.label :remember_me do
+            = f.check_box :remember_me
+            Stay signed in
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Sign in
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <h4 class="success-color">Having trouble accessing your account?</h4>
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    %h4.success-color Having trouble accessing your account?
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/unlocks/new.html.erb' do <<-HTML
-<%
-  title 'Re-send unlock instructions'
-  meta_description '...'
-  heading 'Re-send unlock instructions'
-%>
-
-<div class="row">
-  <div class="col-sm-4">
-    <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true,
-        data: {
-          'rule-required' => 'true',
-          'rule-maxlength' => '254'
-        } %>
-      </div>
-      <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+file 'app/views/devise/unlocks/new.html.haml' do <<-HTML
+- title 'Re-send unlock instructions'
+- meta_description '...'
+- heading 'Re-send unlock instructions'
+.row
+  .col-sm-4
+    = form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', maxlength: 254, autofocus: true, |
+          data: {                                                                       |
+            'rule-required' => 'true',                                                  |
+            'rule-maxlength' => '254'                                                   |
+          }                                                                             |
+      = button_tag type: 'submit', class: 'btn btn-primary' do
         Send
-      <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-6 col-sm-offset-2">
-    <%= render 'devise/shared/links' %>
-  </div>
-</div>
+  .col-sm-6.col-sm-offset-2
+    = render 'devise/shared/links'
 HTML
 end
 
-file 'app/views/devise/shared/_links.html.erb' do <<-'HTML'
-<%= content_tag(:h4, 'Or do something else') if controller_name != 'sessions' %>
-<ul>
-  <%- if controller_name != 'sessions' %>
-    <li>
-      <%= link_to 'Sign in', new_session_path(resource_name) %>
-    </li>
-  <% end -%>
-
-  <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-    <li>
-      <%= link_to 'Sign up', new_registration_path(resource_name) %>
-    </li>
-  <% end -%>
-
-  <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-    <li>
-      <%= link_to 'Forgot your password?', new_password_path(resource_name) %>
-    </li>
-  <% end -%>
-
-  <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-    <li>
-      <%= link_to 'Re-send confirmation instructions?', new_confirmation_path(resource_name) %>
-    </li>
-  <% end -%>
-
-  <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-    <li>
-      <%= link_to 'Are you locked out of your account?', new_unlock_path(resource_name) %>
-    </li>
-  <% end -%>
-
-  <%- if devise_mapping.omniauthable? %>
-    <%- resource_class.omniauth_providers.each do |provider| %>
-      <li><%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider) %></li>
-    <% end -%>
-  <% end -%>
-</ul>
+file 'app/views/devise/shared/_links.html.haml' do <<-'HTML'
+= content_tag(:h4, 'Or do something else') if controller_name != 'sessions'
+%ul
+  - if controller_name != 'sessions'
+    %li
+      = link_to 'Sign in', new_session_path(resource_name)
+  - if devise_mapping.registerable? && controller_name != 'registrations'
+    %li
+      = link_to 'Sign up', new_registration_path(resource_name)
+  - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+    %li
+      = link_to 'Forgot your password?', new_password_path(resource_name)
+  - if devise_mapping.confirmable? && controller_name != 'confirmations'
+    %li
+      = link_to 'Re-send confirmation instructions?', new_confirmation_path(resource_name)
+  - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+    %li
+      = link_to 'Are you locked out of your account?', new_unlock_path(resource_name)
+  - if devise_mapping.omniauthable?
+    - resource_class.omniauth_providers.each do |provider|
+      %li= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
 HTML
 end
 
@@ -686,28 +589,22 @@ puts
 say_status  'views', 'Modifying the layout files...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-file 'app/views/layouts/_navigation_auth.html.erb', <<-HTML
-<% if current_account %>
-  <li>
-    <%= link_to 'Settings', edit_account_registration_path %>
-  </li>
-  <li>
-    <%= link_to 'Sign out', destroy_account_session_path, method: :delete %>
-  </li>
-<% else %>
-  <li>
-    <%= link_to 'Sign in', new_account_session_path %>
-  </li>
-  <li>
-    <%= link_to 'Register', new_account_registration_path %>
-  </li>
-<% end %>
+file 'app/views/layouts/_navigation_auth.html.haml', <<-HTML
+- if current_account
+  %li
+    = link_to 'Settings', edit_account_registration_path
+  %li
+    = link_to 'Sign out', destroy_account_session_path, method: :delete
+- else
+  %li
+    = link_to 'Sign in', new_account_session_path
+  %li
+    = link_to 'Register', new_account_registration_path
 HTML
 
-inject_into_file 'app/views/layouts/_navigation.html.erb', after: "</ul>\n" do <<-CODE
-      <ul class="nav navbar-nav nav-auth">
-        <%= render 'layouts/navigation_auth' %>
-      </ul>
+inject_into_file 'app/views/layouts/_navigation.html.haml', after: "</ul>\n" do <<-CODE
+%ul.nav.navbar-nav.nav-auth
+  = render 'layouts/navigation_auth'
 CODE
 end
 

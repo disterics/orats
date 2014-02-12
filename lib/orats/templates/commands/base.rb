@@ -483,120 +483,85 @@ puts        '-'*80, ''; sleep 0.25
 
 run 'rm -f app/views/layouts/application.html.erb'
 
-file 'app/views/layouts/application.html.erb', <<-HTML
-!!! 5
-%html {:lang => "en"}
+file 'app/views/layouts/application.html.haml', <<-HTML
+!!!
+%html{lang: "en"}
   %head
-    %title= yield(:title)
-    %meta{:charset => "utf-8"}
-    %meta{:http-equiv => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
-    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
-    %meta{:name => "description",  :content => "<%= yield :meta_description %>" />
-
-    %meta{:content => "text/html; charset=utf-8", 'http-equiv' => 'Content-Type'}
-<!doctype html>
-<html lang="en">
-  <head>
-  <title><%= yield :title %></title>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= yield :meta_description %>" />
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <%= link_to_all_favicons %>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/json3/3.3.0/json3.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
-  <![endif]-->
-</head>
-<body>
-  <header>
-    <%= render 'layouts/navigation' %>
-  </header>
-
-  <main role="main" class="container">
-    <div class="page-header">
-      <h1><%= yield :heading %></h1>
-    </div>
-    <%= render 'layouts/flash' %>
-    <%= yield %>
-  </main>
-
-  <footer>
-    <hr />
-    <div class="container">
-      <%= render 'layouts/footer' %>
-    </div>
-  </footer>
-
-  <% render 'layouts/google_analytics' %>
-</body>
-</html>
+    %title= yield :title
+    %meta{charset: "utf-8"}/
+    %meta{content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    %meta{content: yield :meta_description, name: "description"}/
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+    = link_to_all_favicons
+    /[if lt IE 9]
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/json3/3.3.0/json3.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+  %body
+    %header= render 'layouts/navigation'
+    %main.container{role: "main"}
+      .page-header
+        %h1= yield :heading
+      = render 'layouts/flash'
+      = yield
+    %footer
+      %hr/
+      .container
+        = render 'layouts/footer'
+    - render 'layouts/google_analytics'
 HTML
 
 git add:    '.'
 git commit: "-m 'Add new layout view'"
 
-file 'app/views/layouts/_flash.html.erb', <<-'HTML'
-<% flash.each do |key, msg| %>
-  <% unless key == :timedout %>
-    <%= content_tag :div, class: "alert alert-dismissable alert-#{key}" do -%>
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-        &times;
-      </button>
-      <%= msg %>
-    <% end %>
-  <% end %>
-<% end %>
+file 'app/views/layouts/_flash.html.haml', <<-'HTML'
+- flash.each do |key, msg|
+  - unless key == :timedout
+    = content_tag :div, class: "alert alert-dismissable alert-#{key}" do
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", type: "button"}
+        \×
+      = msg
 HTML
 
 git add:    '.'
 git commit: "-m 'Add flash message partial'"
 
-file 'app/views/layouts/_navigation.html.erb', <<-HTML
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to '#{app_name}', '#root_path_would_go_here', class: 'navbar-brand' %>
-    </div>
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <%= render 'layouts/navigation_links' %>
-      </ul>
-    </div>
-  </div>
-</nav>
+file 'app/views/layouts/_navigation.html.haml', <<-HTML
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to '#{app_name}', '#root_path_would_go_here', class: 'navbar-brand'
+    .collapse.navbar-collapse
+      %ul.nav.navbar-nav= render 'layouts/navigation_links'
 HTML
 
 git add:    '.'
 git commit: "-m 'Add navigation partial'"
 
-file 'app/views/layouts/_navigation_links.html.erb', <<-HTML
-<li class="active">
-  <%= link_to 'Bar', '#' %>
-</li>
+file 'app/views/layouts/_navigation_links.html.haml', <<-HTML
+%li.active
+  = link_to 'Bar', '#'
 HTML
 
 git add:    '.'
 git commit: "-m 'Add navigation links partial'"
 
-file 'app/views/layouts/_footer.html.erb', <<-HTML
-<p class="text-muted">&copy; #{Time.now.year.to_s} #{app_name} - All rights reserved</p>
+file 'app/views/layouts/_footer.html.haml', <<-HTML
+%p.text-muted &copy; #{Time.now.year.to_s} #{app_name} - All rights reserved
 HTML
 
 git add:    '.'
 git commit: "-m 'Add footer partial'"
 
-file 'app/views/layouts/_google_analytics.html.erb', <<-HTML
+file 'app/views/layouts/_google_analytics.html.haml', <<-HTML
 HTML
 
 git add:    '.'
@@ -777,10 +742,10 @@ puts
 say_status  'assets', 'Modifying javascript and coffeescript files...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-gsub_file 'app/assets/javascripts/application.js', "//= require jquery\n", ''
+# gsub_file 'app/assets/javascripts/application.js', "//= require jquery\n", ''
 
-git add:    '.'
-git commit: "-m 'Remove jquery from the application.js file because it is loaded from a CDN'"
+# git add:    '.'
+# git commit: "-m 'Remove jquery from the application.js file because it is loaded from a CDN'"
 
 inject_into_file 'app/assets/javascripts/application.js',
                  "//= require jquery.turbolinks\n",
