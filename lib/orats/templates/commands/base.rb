@@ -28,13 +28,14 @@ app_name_class = app_name.humanize
 
 # ----- Create the git repo ----------------------------------------------------------------------------
 
-puts
-say_status  'git', 'Creating a new local git repo...', :yellow
-puts        '-'*80, ''; sleep 0.25
+# Repo exists already
+# puts
+# say_status  'git', 'Creating a new local git repo...', :yellow
+# puts        '-'*80, ''; sleep 0.25
 
-git :init
-git add: '.'
-git commit: "-m 'Initial commit'"
+# git :init
+# git add: '.'
+# git commit: "-m 'Initial commit'"
 
 # ----- Modify the .gitignore file --------------------------------------------------------------------
 
@@ -66,10 +67,11 @@ puts
 say_status  'root', 'Creating root files...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-file '.ruby-version', '2.1.0'
+# Don't add the ruby-version
+# file '.ruby-version', '2.1.0'
 
-git add:    '.'
-git commit: "-m 'Add .ruby-version file for common ruby version managers'"
+# git add:    '.'
+# git commit: "-m 'Add .ruby-version file for common ruby version managers'"
 
 file 'Procfile' do <<-CODE
 web: puma -C config/puma.rb
@@ -156,7 +158,7 @@ inject_into_file 'config/application.rb', after: "automatically loaded.\n" do <<
 CODE
 end
 
-gsub_file 'config/application.rb', "# config.time_zone = 'Central Time (US & Canada)'", "config.time_zone = 'Eastern Time (US & Canada)'"
+gsub_file 'config/application.rb', "# config.time_zone = 'Central Time (US & Canada)'", "config.time_zone = 'Pacific Time (US & Canada)'"
 
 append_file 'config/application.rb' do <<-'FILE'
 
@@ -482,6 +484,16 @@ puts        '-'*80, ''; sleep 0.25
 run 'rm -f app/views/layouts/application.html.erb'
 
 file 'app/views/layouts/application.html.erb', <<-HTML
+!!! 5
+%html {:lang => "en"}
+  %head
+    %title= yield(:title)
+    %meta{:charset => "utf-8"}
+    %meta{:http-equiv => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+    %meta{:name => "description",  :content => "<%= yield :meta_description %>" />
+
+    %meta{:content => "text/html; charset=utf-8", 'http-equiv' => 'Content-Type'}
 <!doctype html>
 <html lang="en">
   <head>
