@@ -627,7 +627,7 @@ puts
 say_status  'root', 'Modifying the .env file...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-inject_into_file '.env', before: "\n#{app_name_upper}_SMTP_ADDRESS" do <<-'CODE'
+inject_into_file '.env', before: "\n#{app_name_upper}_SMTP_ADDRESS" do <<-CODE
 #{app_name_upper}_TOKEN_DEVISE_SECRET: #{generate_token}
 #{app_name_upper}_TOKEN_DEVISE_PEPPER: #{generate_token}
 CODE
