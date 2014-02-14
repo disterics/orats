@@ -44,7 +44,7 @@ gem 'pundit', '~> 0.2.1'
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add devise, devise-async and pundit gems'"
 
 # ----- Run bundle install ----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ append_file 'config/sidekiq.yml' do <<-FILE
 FILE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add the devise mailer queue to the sidekiq config'"
 
 # ----- Create the account fixtures -------------------------------------------------------------------
@@ -105,7 +105,7 @@ git commit: "-m 'Add the devise mailer queue to the sidekiq config'"
 # CODE
 # end
 
-# git add: '.'
+# git add: '-A .'
 # git commit: "-m 'Add the account model'"
 
 # # ----- Modify the test helper ------------------------------------------------------------------------
@@ -122,7 +122,7 @@ git commit: "-m 'Add the devise mailer queue to the sidekiq config'"
 # CODE
 # end
 
-# git add: '.'
+# git add: '-A .'
 # git commit: "-m 'Add the devise helpers to test helper'"
 
 # # ----- Create the account unit tests -----------------------------------------------------------------
@@ -181,7 +181,7 @@ git commit: "-m 'Add the devise mailer queue to the sidekiq config'"
 # CODE
 # end
 
-# git add: '.'
+# git add: '-A .'
 # git commit: "-m 'Add the account unit tests'"
 
 # ----- Create the account model ----------------------------------------------------------------------
@@ -234,7 +234,7 @@ end
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add the account model'"
 
 # ----- Create devise migration -----------------------------------------------------------------------
@@ -279,7 +279,7 @@ create_migration :accounts, %{
     add_index :accounts, :unlock_token,         :unique => true
   }
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add devise model migration'"
 
 # ----- Create a seed user ----------------------------------------------------------------------------
@@ -290,7 +290,7 @@ puts        '-'*80, ''; sleep 0.25
 
 append_file 'db/seeds.rb', "\nAccount.create({ email: \"admin@#{app_name}.com\", password: \"password\", role: \"admin\" })"
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add a seed user'"
 
 # ----- Create en i18n entries ------------------------------------------------------------------------
@@ -307,7 +307,7 @@ authorization:
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add en i18n entries'"
 
 # ----- Modify the application controller -------------------------------------------------------------
@@ -322,7 +322,7 @@ inject_into_file 'app/controllers/application_controller.rb', after: "::Base\n" 
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Alias current_user to current_account to play nice with other gems'"
 
 inject_into_file 'app/controllers/application_controller.rb', before: "end\n" do <<-'CODE'
@@ -340,7 +340,7 @@ inject_into_file 'app/controllers/application_controller.rb', before: "end\n" do
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Change the application controller to allow overriding the devise sign in path'"
 
 # ----- Create the devise views -----------------------------------------------------------------------
@@ -370,7 +370,7 @@ file 'app/views/devise/confirmations/new.html.haml' do <<-HTML
 HTML
 end
 
-file 'app/views/devise/mailer/confirmation_instructions.html.haml' do <<-HTML
+file 'app/views/devise/mailer/confirmation_instructions.html.haml' do <<-'HTML'
 %p
   Welcome #{@email}!
 %p You can confirm your account email through the link below:
@@ -378,7 +378,7 @@ file 'app/views/devise/mailer/confirmation_instructions.html.haml' do <<-HTML
 HTML
 end
 
-file 'app/views/devise/mailer/reset_password_instructions.html.haml' do <<-HTML
+file 'app/views/devise/mailer/reset_password_instructions.html.haml' do <<-'HTML'
 %p
   Hello #{@resource.email}!
 %p Someone has requested a link to change your password. You can do this through the link below.
@@ -388,7 +388,7 @@ file 'app/views/devise/mailer/reset_password_instructions.html.haml' do <<-HTML
 HTML
 end
 
-file 'app/views/devise/mailer/unlock_instructions.html.haml' do <<-HTML
+file 'app/views/devise/mailer/unlock_instructions.html.haml' do <<-'HTML'
 %p
   Hello #{@resource.email}!
 %p Your account has been locked due to an excessive number of unsuccessful sign in attempts.
@@ -441,7 +441,7 @@ file 'app/views/devise/passwords/new.html.haml' do <<-HTML
 HTML
 end
 
-file 'app/views/devise/registrations/edit.html.haml' do <<-HTML
+file 'app/views/devise/registrations/edit.html.haml' do <<-'HTML'
 - title 'Edit your account'
 - meta_description '...'
 - heading 'Edit your account'
@@ -580,7 +580,7 @@ file 'app/views/devise/shared/_links.html.haml' do <<-'HTML'
 HTML
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add the devise views'"
 
 # ----- Modify the layout files ------------------------------------------------------------------------
@@ -608,7 +608,7 @@ inject_into_file 'app/views/layouts/_navigation.html.haml', after: "</ul>\n" do 
 CODE
 end
 
-append_file 'app/assets/stylesheets/application.css.scss' do <<-CODE
+append_file 'app/assets/stylesheets/application.css.scss' do <<-'CODE'
 
 @media (min-width: $screen-sm) {
   .nav-auth {
@@ -618,7 +618,7 @@ append_file 'app/assets/stylesheets/application.css.scss' do <<-CODE
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add account management links to the layout and add the necessary css selectors'"
 
 # ----- Modify the .env file --------------------------------------------------------------------------
@@ -627,18 +627,18 @@ puts
 say_status  'root', 'Modifying the .env file...', :yellow
 puts        '-'*80, ''; sleep 0.25
 
-inject_into_file '.env', before: "\n#{app_name_upper}_SMTP_ADDRESS" do <<-CODE
+inject_into_file '.env', before: "\n#{app_name_upper}_SMTP_ADDRESS" do <<-'CODE'
 #{app_name_upper}_TOKEN_DEVISE_SECRET: #{generate_token}
 #{app_name_upper}_TOKEN_DEVISE_PEPPER: #{generate_token}
 CODE
 end
 
-inject_into_file '.env', before: "\n#{app_name_upper}_DATABASE_NAME" do <<-CODE
+inject_into_file '.env', before: "\n#{app_name_upper}_DATABASE_NAME" do <<-'CODE'
 #{app_name_upper}_ACTION_MAILER_DEVISE_DEFAULT_EMAIL: info@#{app_name}.com
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add the devise tokens and default email to the .env file'"
 
 # ----- Create the config files -----------------------------------------------------------------------
@@ -650,7 +650,7 @@ puts        '-'*80, ''; sleep 0.25
 file 'config/initializers/devise_async.rb', 'Devise::Async.backend = :sidekiq'
 generate 'devise:install'
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add the devise and devise async initializers'"
 
 # ----- Modify the config files -----------------------------------------------------------------------
@@ -685,7 +685,7 @@ gsub_file 'config/initializers/devise.rb', '# config.unlock_in = 1.hour',
 gsub_file 'config/initializers/devise.rb', '# config.last_attempt_warning = false',
           'config.last_attempt_warning = true'
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Change the devise initializer default values'"
 
 # ----- Modify the routes file ------------------------------------------------------------------------
@@ -712,7 +712,7 @@ inject_into_file 'config/routes.rb', after: "collection\n  end\n" do <<-CODE
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add devise to the routes file'"
 
 # ----- Add pundit support ----------------------------------------------------------------------------
@@ -723,7 +723,7 @@ puts        '-'*80, ''; sleep 0.25
 
 generate 'pundit:install'
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add pundit application policy'"
 
 inject_into_file 'app/controllers/application_controller.rb', after: "::Base\n" do <<-'CODE'
@@ -746,5 +746,5 @@ inject_into_file 'app/controllers/application_controller.rb', after: "  #end\n" 
 CODE
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add pundit logic to the application controller'"

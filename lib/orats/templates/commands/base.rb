@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # =====================================================================================================
 # Template for generating an opinionated base Rails 4.0.2 project using Ruby 2.1.0
 # =====================================================================================================
@@ -34,7 +35,7 @@ app_name_class = app_name.humanize
 # puts        '-'*80, ''; sleep 0.25
 
 # git :init
-# git add: '.'
+# git add: '-A .'
 # git commit: "-m 'Initial commit'"
 
 # ----- Modify the .gitignore file --------------------------------------------------------------------
@@ -58,7 +59,7 @@ append_to_file '.gitignore' do <<-TEXT
 TEXT
 end
 
-git add: '.'
+git add: '-A .'
 git commit: "-m 'Add common OS and editor files to the .gitignore file'"
 
 # ----- Create a few root files -----------------------------------------------------------------------
@@ -70,7 +71,7 @@ puts        '-'*80, ''; sleep 0.25
 # Don't add the ruby-version
 # file '.ruby-version', '2.1.0'
 
-# git add:    '.'
+# git add:    '-A .'
 # git commit: "-m 'Add .ruby-version file for common ruby version managers'"
 
 file 'Procfile' do <<-CODE
@@ -79,7 +80,7 @@ worker: sidekiq -C config/sidekiq.yml
 CODE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add a basic Procfile to start the puma and sidekiq processes'"
 
 # ----- Create an .env file ---------------------------------------------------------------------------
@@ -173,7 +174,7 @@ end
 FILE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add tweakable settings, update the timezone and change the way validation errors are shown'"
 
 # ----- Modify the config files -----------------------------------------------------------------------
@@ -205,7 +206,7 @@ production:
 FILE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Dry up the database settings'"
 
 file 'config/puma.rb', <<-CODE
@@ -231,7 +232,7 @@ on_worker_boot do
 end
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add the puma config'"
 
 file 'config/sidekiq.yml', <<-CODE
@@ -242,7 +243,7 @@ file 'config/sidekiq.yml', <<-CODE
   - default
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add the sidekiq config'"
 
 file 'config/sitemap.rb', <<-'CODE'
@@ -270,7 +271,7 @@ CODE
 
 gsub_file 'config/sitemap.rb', 'app_name', app_name
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add the sitemap config'"
 
 file 'config/schedule.rb', <<-CODE
@@ -279,7 +280,7 @@ every 1.day, at: '4:00 am' do
 end
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add a sitemap rake task that occurs at 4am'"
 
 # ----- Modify the environment files ------------------------------------------------------------------
@@ -297,7 +298,7 @@ require_relative 'production.rb'
 end
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add tweakable settings'"
 
 inject_into_file 'config/environments/production.rb', after: "config/application.rb.\n" do <<-"CODE"
@@ -320,7 +321,7 @@ inject_into_file 'config/environments/production.rb', after: "%w( search.js )\n"
 CODE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add tweakable settings, setup daily log rotation and add fonts/pngs to the asset precompiler'"
 
 # ----- Modify the initializer files ------------------------------------------------------------------
@@ -342,7 +343,7 @@ CODE
 gsub_file 'config/initializers/sidekiq.rb', 'app_name', app_name_upper
 gsub_file 'config/initializers/sidekiq.rb', 'ns_app', app_name
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add the sidekiq initializer'"
 
 file 'config/initializers/mini_profiler.rb', <<-CODE
@@ -352,7 +353,7 @@ if defined? Rack::MiniProfiler
 end
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add the rack mini profiler initializer'"
 
 # ----- Modify the routes file ------------------------------------------------------------------------
@@ -363,7 +364,7 @@ puts        '-'*80, ''; sleep 0.25
 
 prepend_file 'config/routes.rb', "require 'sidekiq/web'\n\n"
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add sidekiq to the routes file'"
 
 inject_into_file 'config/routes.rb', after: "draw do\n" do <<-CODE
@@ -373,7 +374,7 @@ inject_into_file 'config/routes.rb', after: "draw do\n" do <<-CODE
 CODE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add a route concern for pagination'"
 
 # ----- Creating application tasks --------------------------------------------------------------------
@@ -412,7 +413,7 @@ namespace :assets do
 end
 CODE
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add a favicon generator task'"
 
 # ----- Creating application helpers ------------------------------------------------------------------
@@ -472,7 +473,7 @@ inject_into_file 'app/helpers/application_helper.rb', after: "ApplicationHelper\
 CODE
 end
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add favicon and boolean view helpers'"
 
 # ----- Creating view files ---------------------------------------------------------------------------
@@ -514,7 +515,7 @@ file 'app/views/layouts/application.html.haml', <<-HTML
     - render 'layouts/google_analytics'
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add new layout view'"
 
 file 'app/views/layouts/_flash.html.haml', <<-'HTML'
@@ -526,7 +527,7 @@ file 'app/views/layouts/_flash.html.haml', <<-'HTML'
       = msg
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add flash message partial'"
 
 file 'app/views/layouts/_navigation.html.haml', <<-HTML
@@ -543,7 +544,7 @@ file 'app/views/layouts/_navigation.html.haml', <<-HTML
       %ul.nav.navbar-nav= render 'layouts/navigation_links'
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add navigation partial'"
 
 file 'app/views/layouts/_navigation_links.html.haml', <<-HTML
@@ -551,20 +552,20 @@ file 'app/views/layouts/_navigation_links.html.haml', <<-HTML
   = link_to 'Bar', '#'
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add navigation links partial'"
 
 file 'app/views/layouts/_footer.html.haml', <<-HTML
 %p.text-muted &copy; #{Time.now.year.to_s} #{app_name} - All rights reserved
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add footer partial'"
 
 file 'app/views/layouts/_google_analytics.html.haml', <<-HTML
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add google analytics partial'"
 
 # ----- Creating public files -------------------------------------------------------------------------
@@ -641,7 +642,7 @@ file 'public/502.html', <<-HTML
 </html>
 HTML
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add public 404, 422, 500 and 502 error pages'"
 
 # ----- Modifying sass files --------------------------------------------------------------------------
@@ -652,7 +653,7 @@ puts        '-'*80, ''; sleep 0.25
 
 run 'mv app/assets/stylesheets/application.css app/assets/stylesheets/application.css.scss'
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Rename application.css to application.scss'"
 git add:    '-u'
 
@@ -660,7 +661,7 @@ inject_into_file 'app/assets/stylesheets/application.css.scss',
                  " *= require font-awesome\n",
                  before: " *= require_self\n"
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add font-awesome to the application.scss file'"
 
 append_file 'app/assets/stylesheets/application.css.scss' do <<-SCSS
@@ -744,14 +745,14 @@ puts        '-'*80, ''; sleep 0.25
 
 # gsub_file 'app/assets/javascripts/application.js', "//= require jquery\n", ''
 
-# git add:    '.'
+# git add:    '-A .'
 # git commit: "-m 'Remove jquery from the application.js file because it is loaded from a CDN'"
 
 inject_into_file 'app/assets/javascripts/application.js',
                  "//= require jquery.turbolinks\n",
                  before: "//= require_tree .\n"
 
-git add:    '.'
+git add:    '-A .'
 git commit: "-m 'Add jquery-turbolinks to the application.js file'"
 
 inject_into_file 'app/assets/javascripts/application.js', before: "//= require_tree .\n" do <<-CODE
