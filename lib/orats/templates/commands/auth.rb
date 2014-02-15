@@ -633,7 +633,7 @@ inject_into_file '.env', before: "\n#{app_name_upper}_SMTP_ADDRESS" do <<-CODE
 CODE
 end
 
-inject_into_file '.env', before: "\n#{app_name_upper}_DATABASE_NAME" do <<-'CODE'
+inject_into_file '.env', before: "\n#{app_name_upper}_DATABASE_NAME" do <<-CODE
 #{app_name_upper}_ACTION_MAILER_DEVISE_DEFAULT_EMAIL: info@#{app_name}.com
 CODE
 end
